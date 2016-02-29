@@ -1,0 +1,70 @@
+//
+//  ZLQClass.m
+//  ZLQDevelopTools
+//
+//  Created by Luqiang on 15/12/13.
+//  Copyright © 2015年 Luqiang. All rights reserved.
+//
+
+#import "ZLQClass.h"
+#import "ZLQCategory.h"
+
+@interface ZLQMutableArray ()
+
+@property (nonatomic, strong) NSMutableArray *array;
+
+@end
+
+@implementation ZLQMutableArray
+
+- (void)addObject:(id)anObject defaultObject:(id)defaultObject {
+    if ([self isValid:anObject]) {
+        [self.array addObject:anObject];
+    } else {
+        [self.array addObject:defaultObject];
+    }
+}
+
+//- (id)objectAtIndex:(NSUInteger)index {
+//    return nil;
+//}
+
+
+@end
+
+@interface ZLQMutableDictionary ()
+
+@property (nonatomic, strong) NSMutableDictionary *dictionary;
+
+@end
+
+@implementation ZLQMutableDictionary
+
+- (void)setObject:(id)anObject forKey:(id<NSCopying>)aKey defaultObject:(id)defaultObject {
+    if ([self isValid:anObject]) {
+        [self.dictionary setObject:anObject forKey:aKey];
+    } else {
+        [self.dictionary setObject:defaultObject forKey:aKey];
+    }
+}
+
+- (void)setValue:(id)value forKey:(NSString *)key defaultValue:(id)defaultValue {
+    [self setObject:value forKey:key defaultObject:defaultValue];
+}
+
+
+@end
+
+@implementation ZLQUnderline
+
+- (instancetype)initWithFrame:(CGRect)frame color:(UIColor *)color {
+    self = [super init];
+    if (self) {
+        self.frame = frame;
+        self.backgroundColor = color.CGColor;
+    }
+    return self;
+}
+
+@end
+

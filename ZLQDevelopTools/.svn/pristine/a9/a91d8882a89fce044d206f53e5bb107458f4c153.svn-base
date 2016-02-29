@@ -1,0 +1,11 @@
+//
+//  ZLQMacro.h
+//  ZLQDevelopTools
+//
+//  Created by Luqiang on 15/12/23.
+//  Copyright © 2015年 Luqiang. All rights reserved.
+//
+
+
+//弱引用
+#define ZLQ_WEAKSELF __weak typeof(self) weakSelf = self;

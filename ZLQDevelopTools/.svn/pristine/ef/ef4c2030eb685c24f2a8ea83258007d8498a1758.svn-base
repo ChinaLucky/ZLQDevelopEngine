@@ -1,0 +1,174 @@
+//
+//  ZLQHttp.m
+//  ZLQDevelopTools
+//
+//  Created by Luqiang on 15/12/21.
+//  Copyright © 2015年 Luqiang. All rights reserved.
+//
+
+#import "ZLQHttp.h"
+
+@interface ZLQHttp ()
+
+@property (nonatomic, strong) AFHTTPSessionManager *manager;
+@property (nonatomic, strong) NSMutableDictionary *headerParameters;
+
+@end
+
+@implementation ZLQHttp
+
++ (ZLQHttp *)sharedInstance {
+    static ZLQHttp *instance;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        instance = [[ZLQHttp alloc] init];
+    });
+    return instance;
+}
+
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        _manager=[AFHTTPSessionManager manager];
+        _manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+        [_manager.requestSerializer setTimeoutInterval:8.f];
+        _timeoutInterval = 8.f;
+    }
+    return self;
+}
+
+- (void)setTimeoutInterval:(CGFloat)timeoutInterval {
+    [self.manager.requestSerializer setTimeoutInterval:timeoutInterval];
+}
+
+
+
+#pragma mark - 请求方法
+/**不携带请求头的GET请求*/
+- (void)requestWithGET:(NSString *)URL parameters:(NSDictionary *)parameters  success:(SuccessBlock)successBlock failure:(FailureBlock)failureBlock {
+    [self requestWithGET:URL parameters:parameters headerParameters:nil success:successBlock failure:failureBlock];
+}
+
+/**不携带请求头的POST请求*/
+- (void)requestWithPOST:(NSString *)URL parameters:(NSDictionary *)parameters  success:(SuccessBlock)successBlock failure:(FailureBlock)failureBlock {
+    [self requestWithPOST:URL parameters:parameters headerParameters:nil success:successBlock failure:failureBlock];
+}
+/**携带请求头的GET请求*/
+- (void)requestWithGET:(NSString *)URL parameters:(NSDictionary *)parameters headerParameters:(NSDictionary *)headerParameters success:(SuccessBlock)successBlock failure:(FailureBlock)failureBlock {
+    __weak typeof(self) weakSelf = self;
+    [self addHTTPHeader:headerParameters];
+    NSLog(@"请求URL：%@, Body参数：%@, Header参数：%@", URL, parameters,     self.manager.requestSerializer.HTTPRequestHeaders);
+    [self.manager GET:URL parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        NSLog(@"数据请求成功：%@", responseObject);
+        [weakSelf successGlobalHandle:task object:responseObject success:successBlock];
+    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+        NSLog(@"通用请求错误：%@", error.localizedDescription);
+        [weakSelf failureGlobalHandle:task error:error failure:failureBlock];
+    }];
+    [self removeHTTPHeader];
+}
+/**携带请求头的POST请求*/
+- (void)requestWithPOST:(NSString *)URL parameters:(NSDictionary *)parameters headerParameters:(NSDictionary *)headerParameters success:(SuccessBlock)successBlock failure:(FailureBlock)failureBlock {
+    __weak typeof(self) weakSelf = self;
+    [self addHTTPHeader:headerParameters];
+    NSLog(@"请求URL：%@, Body参数：%@, Header参数：%@", URL, parameters,     self.manager.requestSerializer.HTTPRequestHeaders);
+    [self.manager POST:URL parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        NSLog(@"数据请求成功：%@", responseObject);
+        [weakSelf successGlobalHandle:task object:responseObject success:successBlock];
+    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+        NSLog(@"通用请求错误：%@", error.localizedDescription);
+        [weakSelf failureGlobalHandle:task error:error failure:failureBlock];
+    }];
+    [self removeHTTPHeader];
+}
+/**上传单张图片的POST请求*/
+- (void)requestWithPOST:(NSString *)URL image:(UIImage *)image imageKey:(NSString *)imageKey success:(SuccessBlock)successBlock failure:(FailureBlock)failureBlock {
+    [self requestWithPOST:URL image:image imageKey:imageKey headerParameters:nil success:successBlock failure:failureBlock];
+}
+
+/**上传多张图片的POST请求*/
+- (void)requestWithPOST:(NSString *)URL images:(NSArray *)images imageKey:(NSString *)imageKey success:(SuccessBlock)successBlock failure:(FailureBlock)failureBlock {
+    [self requestWithPOST:URL images:images imageKey:imageKey success:successBlock failure:failureBlock];
+}
+
+/**携带请求头上传单张图片的POST请求*/
+- (void)requestWithPOST:(NSString *)URL image:(UIImage *)image imageKey:(NSString *)imageKey headerParameters:(NSDictionary *)headerParameters success:(SuccessBlock)successBlock failure:(FailureBlock)failureBlock {
+    NSMutableArray *images = [[NSMutableArray alloc] init];
+    [images addObject:image];
+    [self requestWithPOST:URL images:images imageKey:imageKey headerParameters:headerParameters success:successBlock failure:failureBlock];
+}
+
+/**携带请求头上传多张图片的POST请求*/
+- (void)requestWithPOST:(NSString *)URL images:(NSArray *)images imageKey:(NSString *)imageKey headerParameters:(NSDictionary *)headerParameters success:(SuccessBlock)successBlock failure:(FailureBlock)failureBlock {
+    __weak typeof(self) weakSelf = self;
+    [self addHTTPHeader:headerParameters];
+    NSLog(@"请求URL：%@, Body参数：%@, Header参数：%@", URL, nil, self.manager.requestSerializer.HTTPRequestHeaders);
+    [self.manager POST:URL parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        for (UIImage *image in images) {
+            NSData *imgData = [[NSData alloc] initWithData:UIImageJPEGRepresentation(image, 1.0)];
+            [formData appendPartWithFileData:imgData name:imageKey fileName:[NSString stringWithFormat:@"%@.jpg", imageKey] mimeType:@"image/jpeg"];
+        }
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        NSLog(@"数据请求成功：%@", responseObject);
+        [weakSelf successGlobalHandle:task object:responseObject success:successBlock];
+    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+        NSLog(@"通用请求错误：%@", error.localizedDescription);
+        [weakSelf failureGlobalHandle:task error:error failure:failureBlock];
+    }];
+    [self removeHTTPHeader];
+}
+
+- (void)addHTTPHeader:(NSDictionary *)parameters {
+    if (!self.headerParameters) {
+        self.headerParameters = [[NSMutableDictionary alloc] init];
+    }
+    [self.headerParameters setValuesForKeysWithDictionary:parameters];
+    for (NSString *key in [self.headerParameters allKeys]) {
+        [self.manager.requestSerializer setValue:parameters[key] forHTTPHeaderField:key];
+    }
+}
+
+- (void)removeHTTPHeader {
+    if (!self.headerParameters) {
+        return;
+    }
+    for (NSString *key in [self.headerParameters allKeys]) {
+        [self.manager.requestSerializer setValue:nil forHTTPHeaderField:key];
+    }
+}
+
+/**结果处理*/
+- (void)successGlobalHandle:(NSURLSessionDataTask *)task object:(id)responseObject success:(SuccessBlock)successBlock {
+    NSLog(@"数据请求成功：%@", responseObject);
+    if ([self successErroeHandle:responseObject]) {
+        if (successBlock) {
+            successBlock(responseObject);
+        }
+    }
+}
+
+- (void)failureGlobalHandle:(NSURLSessionDataTask *)task error:(NSError *)error failure:(FailureBlock)failureBlock {
+    NSLog(@"通用请求错误：%@", error.localizedDescription);
+    if ([self failureErroeHandle:error]) {
+        if (failureBlock) {
+            failureBlock(error);
+        }
+    }
+}
+
+- (BOOL)successErroeHandle:(id)responseObject {
+    //overlay
+    return YES;
+}
+
+- (BOOL)failureErroeHandle:(NSError *)error {
+    //overlay
+    return YES;
+}
+
+@end
+
+
+
+
+

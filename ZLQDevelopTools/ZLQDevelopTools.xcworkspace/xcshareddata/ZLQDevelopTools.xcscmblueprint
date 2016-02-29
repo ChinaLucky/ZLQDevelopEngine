@@ -1,0 +1,25 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "67a20422-1196-0342-99da-a7350ba92ee8++3361",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+    "67a20422-1196-0342-99da-a7350ba92ee8++3361" : {
+
+    }
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "67a20422-1196-0342-99da-a7350ba92ee8++3361" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "0031A538-857B-442C-BA0A-3E6FB52F5AD4",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "67a20422-1196-0342-99da-a7350ba92ee8++3361" : "ZLQDevelopTools\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "ZLQDevelopTools",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "ZLQDevelopTools.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/139.129.36.226\/svn\/Dreamer",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Subversion",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "67a20422-1196-0342-99da-a7350ba92ee8++3361"
+    }
+  ]
+}

@@ -1,0 +1,113 @@
+//
+//  ZLQCategory.h
+//  ZLQDevelopTools
+//
+//  Created by Luqiang on 15/12/12.
+//  Copyright © 2015年 Luqiang. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+
+#pragma mark - NSObject
+@interface NSObject (ZLQExt)
+
+- (CGFloat)screenWidth;
+- (CGFloat)screenHeight;
+- (BOOL)isValid:(id)anObject;
+
+@end
+
+#pragma mark - NSString
+@interface NSString (ZLQExt)
+
+- (NSString *)MD5UppercaseString;
+- (NSString *)MD5LowercaseString;
+
+@end
+
+#pragma mark - UIView
+@interface UIView (ZLQExt)
+
+@property (nonatomic, assign) CGFloat x;
+@property (nonatomic, assign) CGFloat y;
+@property (nonatomic, assign) CGFloat width;
+@property (nonatomic, assign) CGFloat height;
+@property (nonatomic, assign) CGFloat left;
+@property (nonatomic, assign) CGFloat top;
+@property (nonatomic, assign) CGFloat right;
+@property (nonatomic, assign) CGFloat bottom;
+@property (nonatomic, assign) CGPoint origin;
+@property (nonatomic, assign) CGSize size;
+
+
+@end
+
+#pragma mark - UILabel
+@interface UILabel (ZLQExt)
+
+- (CGSize)textSize;
+- (CGSize)textSizeWithCertainWidth:(CGFloat)width;
+
+@end
+
+#pragma mark - UIViewController
+@interface UIViewController (ZLQExt)
+//Navigation
+- (void)showNavigationBar;
+- (void)hiddenNavigaitonBar;
+//导航栏按钮：纯图片，纯文字，图片加文字   ---    待完成
+- (void)setLeftButtonWithTitle:(NSString *)title clickBlock:(void(^)(UIButton *button))block;
+- (void)setLeftButtonWithImageName:(NSString *)imageName clickBlock:(void(^)(UIButton *button))block;
+- (void)setLeftButtonWithImageName:(NSString *)imageName title:(NSString *)title  clickBlock:(void(^)(UIButton *button))block;
+- (void)setRightButtonWithTitle:(NSString *)title clickBlock:(void(^)(UIButton *button))block;
+- (void)setRightButtonWithImageName:(NSString *)imageName clickBlock:(void(^)(UIButton *button))block;
+//状态栏
+- (void)setStatusBarDefault;
+- (void)setStatusBarLight;
+
+//Tabbar
+- (void)showTabBar;
+- (void)hiddenTabBar;
+
+@end
+
+#pragma mark - UITableView
+@interface UITableView (ZLQExt)
+
+- (void)setSeparatorZero;
+
+@end
+
+#pragma mark - UITableViewCell
+@interface UITableViewCell (ZLQExt)
+
+- (void)setSeparatorZero;
+
+@end
+
+#pragma mark - UIImage
+@interface UIImage (ZLQExt)
+
+/* Crop image in the rectangle*/
+- (UIImage *)cropImageInRect:(CGRect)rect;
+- (UIImage *)scaleImageToSize:(CGSize)size;
+// make rectangle image to ellipse, usually used to show circular avatars.
+- (UIImage *)ellipseImageWithDefaultSetting;
+
+@end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,51 @@
+//
+//  ZLQHttp.h
+//  ZLQDevelopTools
+//
+//  Created by Luqiang on 15/12/21.
+//  Copyright © 2015年 Luqiang. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+#import "AFHTTPSessionManager.h"
+
+typedef void(^HttpSuccessBlock)(NSData *responseObject);
+typedef void(^HttpFailureBlock)(NSError *error);
+
+@interface ZLQHttp : NSObject
++ (ZLQHttp *)sharedInstance;
+
+@property (nonatomic, weak) id delegate;
+@property (nonatomic, assign) CGFloat timeoutInterval;
+
+/**不携带请求头的GET请求*/
+- (void)requestWithGET:(NSString *)URL parameters:(NSDictionary *)parameters  success:(HttpSuccessBlock)successBlock failure:(HttpFailureBlock)failureBlock;
+/**不携带请求头的POST请求*/
+- (void)requestWithPOST:(NSString *)URL parameters:(NSDictionary *)parameters  success:(HttpSuccessBlock)successBlock failure:(HttpFailureBlock)failureBlock;
+/**携带请求头的GET请求*/
+- (void)requestWithGET:(NSString *)URL parameters:(NSDictionary *)parameters headerParameters:(NSDictionary *)headerParameters success:(HttpSuccessBlock)successBlock failure:(HttpFailureBlock)failureBlock;
+/**携带请求头的POST请求*/
+- (void)requestWithPOST:(NSString *)URL parameters:(NSDictionary *)parameters headerParameters:(NSDictionary *)headerParameters success:(HttpSuccessBlock)successBlock failure:(HttpFailureBlock)failureBlock;
+/**不携带请求头上传单张图片的POST请求*/
+- (void)requestWithPOST:(NSString *)URL image:(UIImage *)image imageKey:(NSString *)imageKey success:(HttpSuccessBlock)successBlock failure:(HttpFailureBlock)failureBlock;
+/**不携带请求头上传多张图片的POST请求*/
+- (void)requestWithPOST:(NSString *)URL images:(NSArray *)images imageKey:(NSString *)imageKey success:(HttpSuccessBlock)successBlock failure:(HttpFailureBlock)failureBlock;
+/**携带请求头上传单张图片的POST请求*/
+- (void)requestWithPOST:(NSString *)URL image:(UIImage *)image imageKey:(NSString *)imageKey headerParameters:(NSDictionary *)headerParameters success:(HttpSuccessBlock)successBlock failure:(HttpFailureBlock)failureBlock;
+/**携带请求头上传多张图片的POST请求*/
+- (void)requestWithPOST:(NSString *)URL images:(NSArray *)images imageKey:(NSString *)imageKey headerParameters:(NSDictionary *)headerParameters success:(HttpSuccessBlock)successBlock failure:(HttpFailureBlock)failureBlock;
+
+/**结果处理*/
+- (BOOL)successErroeHandle:(id)responseObject;
+- (BOOL)failureErroeHandle:(NSError *)error;
+
+@end
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,38 @@
+//
+//  ZLQCreate.h
+//  ZLQDevelopTools
+//
+//  Created by Luqiang on 15/12/12.
+//  Copyright © 2015年 Luqiang. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+
+@interface ZLQCreate : NSObject
+
+//UIView
++ (UIView *)createUIViewWithFrame:(CGRect)frame;
+
+//UILabel
++ (UILabel *)createUILabelWithFrame:(CGRect)frame font:(UIFont *)font textColor:(UIColor *)textColor textAlignment:(NSTextAlignment)textAlignment;
+
+//UIButton
++ (UIButton *)createUIButtonWithFrame:(CGRect)frame;
++ (UIButton *)createUIButtonWithFrame:(CGRect)frame title:(NSString *)title target:(id)target action:(SEL)action;
++ (UIButton *)createUIButtonWithFrame:(CGRect)frame title:(NSString *)title imageName:(NSString *)imageName target:(id)target action:(SEL)action;
+
+//UIColor
++ (UIColor *)createUIColorWithHexString:(NSString *)hexString alpha:(CGFloat)alpha;
+
+//UIImageView
++ (UIImageView *)createUIImageViewWithFrame:(CGRect)frame imageName:(NSString *)imageName;
++ (UIImageView *)createUIImageViewWithFrame:(CGRect)frame imageName:(NSString *)imageName cornerRadius:(CGFloat)cornerRadius;
+
+//UITextField
++ (UITextField *)createUITextFieldWithFrame:(CGRect)frame font:(UIFont *)font textColor:(UIColor *)textColor placeholder:(NSString *)placeholder delegate:(id<UITextFieldDelegate>)delegate;
+
+//UIImage
++ (UIImage *)createUIImageWithImageName:(NSString *)imageName;
++ (UIImage *)createUIImageWithColor:(UIColor *)color;
+@end

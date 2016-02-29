@@ -1,0 +1,8 @@
+platform:ios,"7.0"
+pod "CocoaLumberjack", "2.0.1"
+pod "AFNetworking", "2.6.0"
+pod "MJRefresh", "2.4.12"
+pod "MJExtension", "3.0.7"
+pod "SDWebImage", "3.7.3"
+pod "UMengAnalytics-NO-IDFA", "3.5.13"
+

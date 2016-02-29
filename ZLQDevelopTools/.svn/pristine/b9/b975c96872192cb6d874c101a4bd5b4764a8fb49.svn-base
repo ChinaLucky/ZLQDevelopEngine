@@ -1,0 +1,340 @@
+//
+//  ZLQCategory.m
+//  ZLQDevelopTools
+//
+//  Created by Luqiang on 15/12/12.
+//  Copyright © 2015年 Luqiang. All rights reserved.
+//
+
+#import "ZLQCategory.h"
+#import <CommonCrypto/CommonDigest.h>
+
+#pragma mark - NSObject
+@implementation NSObject (ZLQExt)
+
+- (CGFloat)screenWidth {
+    return [UIScreen mainScreen].bounds.size.width;
+}
+
+- (CGFloat)screenHeight {
+    return [UIScreen mainScreen].bounds.size.height;
+}
+
+- (BOOL)isValid:(id)anObject {
+    if (anObject == nil || [anObject isEqual:[NSNull null]]) {
+        return NO;
+    } else {
+        return YES;
+    }
+}
+
+@end
+
+@implementation NSString (ZLQExt)
+
+- (NSString *)MD5UppercaseString {
+    const char *original_str = [self UTF8String];
+    unsigned char result[CC_MD5_DIGEST_LENGTH];
+    CC_MD5(original_str, (CC_LONG)strlen(original_str), result);
+    NSMutableString *hash = [NSMutableString string];
+    for (int i = 0; i < 16; i++)
+        [hash appendFormat:@"%02X", result[i]];
+    return [hash uppercaseString];
+}
+
+- (NSString *)MD5LowercaseString {
+    const char *original_str = [self UTF8String];
+    unsigned char result[CC_MD5_DIGEST_LENGTH];
+    CC_MD5(original_str, (CC_LONG)strlen(original_str), result);
+    NSMutableString *hash = [NSMutableString string];
+    for (int i = 0; i < 16; i++)
+        [hash appendFormat:@"%02X", result[i]];
+    return [hash lowercaseString];
+}
+
+@end
+
+#pragma mark - UIView
+@implementation UIView (ZLQExt)
+
+-(CGFloat)x {
+    return self.frame.origin.x;
+}
+
+- (void)setX:(CGFloat)x {
+    CGRect frame = self.frame;
+    frame.origin.x = x;
+    self.frame = frame;
+}
+
+-(CGFloat)y {
+    return self.frame.origin.y;
+}
+
+- (void)setY:(CGFloat)y {
+    CGRect frame = self.frame;
+    frame.origin.y = y;
+    self.frame = frame;
+}
+
+- (CGFloat)width {
+    return self.frame.size.width;
+}
+
+- (void)setWidth:(CGFloat)width {
+    CGRect frame = self.frame;
+    frame.size.width = width;
+    self.frame = frame;
+}
+
+- (CGFloat)height {
+    return self.frame.size.height;
+}
+
+- (void)setHeight:(CGFloat)height {
+    CGRect frame = self.frame;
+    frame.size.height = height;
+    self.frame = frame;
+}
+
+- (CGFloat)left {
+    return self.frame.origin.x;
+}
+
+-(void)setLeft:(CGFloat)left {
+    CGRect frame = self.frame;
+    frame.origin.x = left;
+    self.frame = frame;
+}
+
+- (CGFloat)top {
+    return self.frame.origin.y;
+}
+
+- (void)setTop:(CGFloat)y {
+    CGRect frame = self.frame;
+    frame.origin.y = y;
+    self.frame = frame;
+}
+
+- (CGFloat)right {
+    return self.frame.origin.x + self.width;
+}
+
+- (void)setRight:(CGFloat)right {
+    CGRect frame = self.frame;
+    frame.origin.x = right - frame.size.width;
+    self.frame = frame;
+}
+
+
+- (CGFloat)bottom {
+    return self.frame.origin.y + self.frame.size.height;
+}
+
+- (void)setBottom:(CGFloat)bottom {
+    CGRect frame = self.frame;
+    frame.origin.y = bottom - frame.size.height;
+    self.frame = frame;
+}
+
+- (CGPoint)origin {
+    return self.frame.origin;
+}
+
+- (void)setOrigin:(CGPoint)origin {
+    CGRect frame = self.frame;
+    frame.origin = origin;
+    self.frame = frame;
+}
+
+- (CGSize)size {
+    return self.frame.size;
+}
+
+- (void)setSize:(CGSize)size {
+    CGRect frame = self.frame;
+    frame.size = size;
+    self.frame = frame;
+}
+
+@end
+
+
+#pragma mark - UILabel
+@implementation UILabel (ZLQExt)
+
+- (CGSize)textSize {
+    return [self.text sizeWithAttributes:@{NSFontAttributeName: self.font}];
+}
+
+- (CGSize)textSizeWithCertainWidth:(CGFloat)width {
+    return [self.text boundingRectWithSize:CGSizeMake(width, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:self.font} context:nil].size;
+}
+
+@end
+
+#pragma mark - UIViewController
+@implementation UIViewController (ZLQExt)
+
+- (void)showNavigationBar {
+    if (self.navigationController.navigationBarHidden) {
+        self.navigationController.navigationBarHidden = NO;
+    }
+}
+
+- (void)hiddenNavigaitonBar {
+    if (!self.navigationController.navigationBarHidden) {
+        self.navigationController.navigationBarHidden = YES;
+    }
+}
+
+- (void)setLeftButtonWithTitle:(NSString *)title clickBlock:(void(^)(UIButton *button))block {
+    
+}
+
+- (void)setLeftButtonWithImageName:(NSString *)imageName clickBlock:(void(^)(UIButton *button))block {
+    
+}
+
+- (void)setLeftButtonWithImageName:(NSString *)imageName title:(NSString *)title  clickBlock:(void(^)(UIButton *button))block {
+    
+}
+
+- (void)setRightButtonWithTitle:(NSString *)title clickBlock:(void(^)(UIButton *button))block {
+    
+}
+
+- (void)setRightButtonWithImageName:(NSString *)imageName clickBlock:(void(^)(UIButton *button))block {
+    
+}
+
+- (void)showTabBar {
+    if (self.tabBarController.tabBar.hidden) {
+        self.tabBarController.tabBar.hidden = NO;
+    }
+}
+
+- (void)hiddenTabBar {
+    if (!self.tabBarController.tabBar.hidden) {
+        self.tabBarController.tabBar.hidden = YES;
+    }
+}
+
+- (void)setStatusBarDefault {
+    if (ZLQ_VERSION_ABOVE(7.0)) {
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+    }
+}
+
+- (void)setStatusBarLight {
+    if (ZLQ_VERSION_ABOVE(7.0)) {
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    }
+}
+
+
+@end
+
+#pragma mark - UITableView
+@implementation UITableView (ZLQExt)
+
+- (void)setSeparatorZero {
+    if ([self respondsToSelector:@selector(setSeparatorInset:)]) {
+        [self setSeparatorInset:UIEdgeInsetsZero];
+    }
+    
+    if ([self respondsToSelector:@selector(setLayoutMargins:)]) {
+        [self setLayoutMargins:UIEdgeInsetsZero];
+    }
+}
+
+@end
+
+#pragma mark - UITableViewCell
+@implementation UITableViewCell (ZLQExt)
+
+- (void)setSeparatorZero {
+    if ([self respondsToSelector:@selector(setSeparatorInset:)]) {
+        [self setSeparatorInset:UIEdgeInsetsZero];
+    }
+    
+    if ([self respondsToSelector:@selector(setLayoutMargins:)]) {
+        [self setLayoutMargins:UIEdgeInsetsZero];
+    }
+}
+
+@end
+
+
+@implementation UIImage (ZLQExt)
+
+- (UIImage *)cropImageInRect:(CGRect)rect
+{
+    CGFloat scale = self.scale;
+    CGRect newRect = CGRectMake(rect.origin.x * scale, rect.origin.y * scale, rect.size.width * scale, rect.size.height * scale);
+    CGImageRef imageRef = CGImageCreateWithImageInRect([self CGImage], newRect);
+    UIImage *cropImage = [UIImage imageWithCGImage:imageRef];
+    CGImageRelease(imageRef);
+    return [cropImage scaleImageToSize:rect.size];
+}
+
+- (UIImage *)scaleImageToSize:(CGSize)size
+{
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(size.width, size.height), NO, 0.0f);
+    [self drawInRect:CGRectMake(0, 0, size.width, size.height)];
+    UIImage *scaledImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return scaledImage;
+}
+
+- (UIImage *)ellipseImageWithDefaultSetting
+{
+    return [self ellipseImage:self
+                    withInset:0
+                  borderWidth:0
+                  borderColor:[UIColor clearColor]];
+}
+
+- (UIImage *)ellipseImage:(UIImage *)image
+                withInset:(CGFloat)inset
+              borderWidth:(CGFloat)width
+              borderColor:(UIColor *)color
+{
+    UIGraphicsBeginImageContext(image.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGRect rect = CGRectMake(inset,
+                             inset,
+                             image.size.width - inset * 2.0f,
+                             image.size.height - inset * 2.0f);
+    
+    CGContextAddEllipseInRect(context, rect);
+    CGContextClip(context);
+    [image drawInRect:rect];
+    
+    if (width > 0) {
+        CGContextSetStrokeColorWithColor(context, color.CGColor);
+        CGContextSetLineCap(context, kCGLineCapButt);
+        CGContextSetLineWidth(context, width);
+        CGContextAddEllipseInRect(context, CGRectMake(inset + width / 2,
+                                                      inset +  width / 2,
+                                                      image.size.width - width - inset * 2.0f,
+                                                      image.size.height - width - inset * 2.0f));
+        
+        CGContextStrokePath(context);
+    }
+    
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
+}
+
+@end
+
+
+
+
+
+
+
+
